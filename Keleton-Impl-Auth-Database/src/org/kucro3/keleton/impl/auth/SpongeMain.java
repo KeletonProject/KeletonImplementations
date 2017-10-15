@@ -5,7 +5,7 @@ import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseKeys;
 import org.slf4j.Logger;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameConstructionEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import com.google.inject.Inject;
@@ -29,7 +29,7 @@ public class SpongeMain {
 	}
 	
 	@Listener
-	public void onLoad(GameConstructionEvent event)
+	public void onLoad(GamePreInitializationEvent event)
 	{
 		ObjectService.put(AuthKeys.SERVICE_POOL, new AuthServicePoolImpl(DatabaseKeys.DATABASE, DatabaseKeys.JDBC_URL_FACTORY));
 	}

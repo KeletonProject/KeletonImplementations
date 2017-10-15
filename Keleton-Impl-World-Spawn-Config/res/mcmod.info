@@ -1,0 +1,17 @@
+[{
+
+    "modid": "keleton-worldspawn",
+
+    "name": "keleton-worldspawn",
+
+    "version":  "1.0",
+
+    "description": "World Spawn Implementation for Keleton Framework",
+
+    "authorList": [
+
+		"Kumonda221"
+
+    ]
+
+}]
