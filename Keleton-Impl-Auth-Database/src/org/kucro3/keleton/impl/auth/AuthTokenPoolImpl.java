@@ -90,7 +90,7 @@ class AuthTokenPoolImpl implements AuthTokenPool {
 		check();
 		try {
 			long timestamp = System.currentTimeMillis();
-			AuthTokenImpl impl = new AuthTokenImpl(this, uuid, password, timestamp, timestamp, cause);
+			AuthTokenImpl impl = new AuthTokenImpl(this, uuid, password, timestamp, timestamp);
 			
 			// event
 			TokenConstructEvent.Pre event_pre = new TokenConstructEventImpl.Pre(cause.merge(Causes.fromHandler(this.owner.uuid)), this.owner.uuid, impl);
@@ -191,7 +191,7 @@ class AuthTokenPoolImpl implements AuthTokenPool {
 					String md5 = result.getString(result.findColumn("PASSWORD"));
 					long firstLogin = result.getLong(result.findColumn("FIRSTLOGIN"));
 					long lastLogin = result.getLong(result.findColumn("FIRSTLOGIN"));
-					AuthTokenImpl token = new AuthTokenImpl(this, uuid, md5, lastLogin, firstLogin, cause);
+					AuthTokenImpl token = new AuthTokenImpl(this, uuid, md5, lastLogin, firstLogin);
 					checkNull(tokens.put(uuid, token));
 				}
 			} catch (SQLException e) {

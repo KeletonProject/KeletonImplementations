@@ -7,14 +7,13 @@ import org.kucro3.keleton.auth.AuthToken;
 import org.spongepowered.api.event.cause.Cause;
 
 class AuthTokenImpl implements AuthToken {
-	AuthTokenImpl(AuthTokenPoolImpl owner, UUID uuid, String md5, long lastLogin, long firstLogin, Cause cause)
+	AuthTokenImpl(AuthTokenPoolImpl owner, UUID uuid, String md5, long lastLogin, long firstLogin)
 	{
 		this.uuid = uuid;
 		this.md5 = md5;
 		this.lastLogin = lastLogin;
 		this.firstLogin = firstLogin;
 		this.owner = owner;
-		this.cause = cause;
 		this.vaild = true;
 	}
 	
@@ -52,12 +51,6 @@ class AuthTokenImpl implements AuthToken {
 	{
 		check();
 		return lastLogin;
-	}
-	
-	@Override
-	public Cause getCause()
-	{
-		return cause;
 	}
 	
 	@Override
@@ -108,9 +101,7 @@ class AuthTokenImpl implements AuthToken {
 	{
 		this.lastLogin = lastlogin;
 	}
-	
-	private final Cause cause;
-	
+
 	private String md5;
 	
 	private boolean online;
