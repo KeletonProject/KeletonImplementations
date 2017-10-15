@@ -256,7 +256,7 @@ public class EconomyServiceImpl implements EnhancedEconomyService, UniqueService
 
 	public EconomyServiceImpl _ENABLE_()
 	{
-		Sponge.getEventManager().registerListeners(this, SpongeMain.getInstance());
+		Sponge.getEventManager().registerListeners(SpongeMain.getInstance(), this);
 		return this;
 	}
 	
