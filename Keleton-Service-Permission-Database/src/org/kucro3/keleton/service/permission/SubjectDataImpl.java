@@ -163,6 +163,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 				
 				return true;
 			} catch (SQLException e) {
+				SpongeMain.getInstance().getLogger().error("SubjectData#addParent", e);
 				return false;
 			}
 		else
@@ -187,6 +188,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearOptions[All]", e);
 			return false;
 		}
 	}
@@ -209,6 +211,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearOptions", e);
 			return false;
 		}
 	}
@@ -231,6 +234,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearParents[All]", e);
 			return false;
 		}
 	}
@@ -253,6 +257,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearParents", e);
 			return false;
 		}
 	}
@@ -275,6 +280,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearPermissions[All]", e);
 			return false;
 		}
 	}
@@ -297,6 +303,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#clearPermissions", e);
 			return false;
 		}
 	}
@@ -396,6 +403,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 			
 			return true;
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#removeParent", e);
 			return false;
 		}
 	}
@@ -452,6 +460,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 				return true;
 			}
 		} catch (SQLException e) {
+			SpongeMain.getInstance().getLogger().error("SubjectData#setOption", e);
 			return false;
 		}
 	}
@@ -500,6 +509,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 					
 					return true;
 				} catch (SQLException e) {
+					SpongeMain.getInstance().getLogger().error("SubjectData#setPermission", e);
 					return false;
 			} 
 			else
@@ -513,6 +523,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 					
 					return true;
 				} catch (SQLException e) {
+					SpongeMain.getInstance().getLogger().error("SubjectData#setPermission", e);
 					return false;
 				}
 	}
