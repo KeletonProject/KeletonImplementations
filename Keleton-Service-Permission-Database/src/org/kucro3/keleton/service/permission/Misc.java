@@ -48,12 +48,14 @@ public class Misc {
 		MurmurHash3.murmurhash3_x64_128(byts, 0, byts.length, MurmurHash3.DEFAULT_SEED, out);
 		return BigDecimal.valueOf(out.val1).multiply(BigDecimal.valueOf(1L << 32)).add(BigDecimal.valueOf(out.val2));
 	}
+
+	public static Set<Context> filter(Set<Context> contexts)
+	{
+		return ContextUtil.filter(contexts, FILTERED_CONTEXTS);
+	}
 	
 	public static String serialize(Set<Context> contexts)
 	{
-		// filter contexts
-		contexts = ContextUtil.filter(contexts, FILTERED_CONTEXTS);
-
 		JsonArray array = new JsonArray();
 		for(Context context : contexts)
 		{
@@ -245,7 +247,14 @@ public class Misc {
 		return (v & sync()) != 0;
 	}
 
-	public static String[] FILTERED_CONTEXTS = {};
+	public static String[] FILTERED_CONTEXTS = {
+			Context.DIMENSION_KEY,
+			Context.LOCAL_HOST_KEY,
+			Context.LOCAL_IP_KEY,
+			Context.REMOTE_IP_KEY,
+			Context.USER_KEY,
+			Context.WORLD_KEY
+	};
 	
 	public static Supplier<? extends CommandSource> fromIdentifier(String identifier)
 	{

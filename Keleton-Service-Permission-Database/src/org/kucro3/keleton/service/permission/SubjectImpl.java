@@ -55,7 +55,8 @@ public class SubjectImpl implements EnhancedSubject {
 	@Override
 	public Optional<CommandSource> getCommandSource()
 	{
-		return Optional.ofNullable(source.get());
+		return Optional.empty();
+//		return Optional.ofNullable(source.get()); unexcepted result, temporarily commented
 	}
 
 	@Override
@@ -84,6 +85,8 @@ public class SubjectImpl implements EnhancedSubject {
 	@Override
 	public List<Subject> getParents(Set<Context> contexts)
 	{
+		contexts = Misc.filter(contexts);
+
 		List<Subject> subjects = parents.get(contexts);
 		if(subjects == null)
 			return Collections.EMPTY_LIST;
@@ -164,6 +167,8 @@ public class SubjectImpl implements EnhancedSubject {
 	@Override
 	public boolean isChildOf(Set<Context> contexts, Subject parent) 
 	{
+		contexts = Misc.filter(contexts);
+
 		List<Subject> subjects = parents.get(contexts);
 		
 		if(subjects == null)

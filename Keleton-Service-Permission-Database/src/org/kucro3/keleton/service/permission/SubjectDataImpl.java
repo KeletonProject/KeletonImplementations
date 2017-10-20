@@ -146,6 +146,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean addParent(Set<Context> contexts, Subject parent, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		String identifier = parent.getIdentifier();
 		Optional<List<String>> optional;
 		List<String> parentList = (optional = Optional.ofNullable(parents.get(contexts))).orElse(new ArrayList<>());
@@ -201,6 +203,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean clearOptions(Set<Context> contexts, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		try {
 			if(!Misc.nosql(option))
 				deleteOptions(contexts);
@@ -247,6 +251,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean clearParents(Set<Context> contexts, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		try {
 			if(!Misc.nosql(option))
 				deleteParents(contexts);
@@ -293,6 +299,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean clearPermissions(Set<Context> contexts, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		try {
 			if(!Misc.nosql(option))
 				deletePermissions(contexts);
@@ -383,6 +391,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean removeParent(Set<Context> contexts, Subject parent, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		try {
 			List<String> parentList = parents.get(contexts);
 			
@@ -416,6 +426,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	
 	final boolean setOption(Set<Context> contexts, String key, String value, int option)
 	{
+		contexts = Misc.filter(contexts);
+
 		try {
 			Optional<Map<String, String>> optional;
 			Map<String, String> map = (optional = Optional.ofNullable(options.get(contexts))).orElse(new HashMap<>());
@@ -474,6 +486,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 	final boolean setPermission(Set<Context> contexts, String permission, Tristate value, int option)
 	{
 		NodeTree tree;
+
+		contexts = Misc.filter(contexts);
 		
 		if((tree = trees.get(contexts)) == null)
 		{
