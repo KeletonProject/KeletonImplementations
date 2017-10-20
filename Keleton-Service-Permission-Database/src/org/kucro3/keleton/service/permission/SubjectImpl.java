@@ -131,9 +131,9 @@ public class SubjectImpl implements EnhancedSubject {
 		
 		PARENTS: {
 			for(Subject parent : getParents(contexts))
-				fromParents.and(parent.getPermissionValue(contexts, permission));
+				fromParents = fromParents.and(parent.getPermissionValue(contexts, permission));
 			
-			if(fromDefault.equals(Tristate.UNDEFINED))
+			if(fromParents.equals(Tristate.UNDEFINED))
 				break PARENTS;
 			
 			value = fromParents;

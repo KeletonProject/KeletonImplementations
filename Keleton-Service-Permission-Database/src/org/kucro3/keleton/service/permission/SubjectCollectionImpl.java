@@ -59,7 +59,7 @@ public class SubjectCollectionImpl implements SubjectCollection {
 			return subject;
 		try {
 			subjects.put(identifier, subject = new SubjectImpl(owner, this, table(tableName), identifier,
-					Misc.fromIdentifier(identifier), Misc.nosql())._ENABLE_());
+					Misc.fromIdentifier(identifier))._ENABLE_());
 			EventHelper.fireSubjectCreateEvent(owner.uid, identifier);
 		} catch (SQLException e) {
 			// unused

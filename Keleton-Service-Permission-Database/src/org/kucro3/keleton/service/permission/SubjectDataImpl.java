@@ -64,7 +64,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 		Map<Set<Context>, Map<String, Boolean>> initialPermissions = new HashMap<>();
 		Map<Set<Context>, Map<String, String>> initialOptions = new HashMap<>();
 		Map<Set<Context>, List<String>> initialParents = new HashMap<>();
-		Map<Integer, Set<Context>> cache = new HashMap<>();
+		Map<BigDecimal, Set<Context>> cache = new HashMap<>();
 		
 		final Reference<ResultSet> ref = new Reference<>();
 		owner.service.db.process((connection) -> {
@@ -80,8 +80,8 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 				String type = result.getString("TYPE");
 				
 				Set<Context> contexts;
-				int hash = result.getInt("CONTEXT_HASH");
-				if(hash == 0)
+				BigDecimal hash = result.getBigDecimal("CONTEXT_HASH");
+				if(hash.equals(BigDecimal.ZERO))
 					contexts = SubjectData.GLOBAL_CONTEXT;
 				else if((contexts = cache.get(hash)) == null)
 					cache.put(hash, contexts = Misc.deserialize(result.getString("CONTEXT")));

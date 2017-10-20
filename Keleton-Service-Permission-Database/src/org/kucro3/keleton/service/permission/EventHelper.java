@@ -78,7 +78,7 @@ public final class EventHelper {
 	public static void fireSubjectDataPermissionSetEvent(UUID uid, Subject subject, SubjectData data,
 			java.util.Set<Context> contexts, String permission, Tristate value)
 	{
-		fireSubjectDataPermissionSetEvent(uid, subject, data, contexts, permission, value);
+		fireSubjectDataPermissionSetEvent(fromHandler(uid), subject, data, contexts, permission, value);
 	}
 	
 	public static void fireSubjectDataPermissionSetEvent(Cause cause, Subject subject, SubjectData data,
