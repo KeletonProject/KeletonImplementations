@@ -1,15 +1,11 @@
 package org.kucro3.keleton.service.permission;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 import org.kucro3.keleton.auth.MurmurHash3;
+import org.kucro3.keleton.misc.ContextUtil;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.service.context.Context;
@@ -55,6 +51,9 @@ public class Misc {
 	
 	public static String serialize(Set<Context> contexts)
 	{
+		// filter contexts
+		contexts = ContextUtil.filter(contexts, FILTERED_CONTEXTS);
+
 		JsonArray array = new JsonArray();
 		for(Context context : contexts)
 		{
@@ -245,6 +244,8 @@ public class Misc {
 	{
 		return (v & sync()) != 0;
 	}
+
+	public static String[] FILTERED_CONTEXTS = {};
 	
 	public static Supplier<? extends CommandSource> fromIdentifier(String identifier)
 	{
