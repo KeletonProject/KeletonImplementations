@@ -506,6 +506,7 @@ public class SubjectDataImpl implements EnhancedSubjectData {
 				
 				return true;
 			} catch (SQLException e) {
+				SpongeMain.getInstance().getLogger().error("SubjectData#setPermission", e);
 				return false;
 			}
 		}

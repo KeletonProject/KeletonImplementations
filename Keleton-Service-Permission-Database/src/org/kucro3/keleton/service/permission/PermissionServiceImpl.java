@@ -149,7 +149,7 @@ public class PermissionServiceImpl implements EnhancedPermissionService, UniqueS
 				 + "CONTEXT text,"
 				 + "CONTEXT_HASH decimal(38),"
 				 + "TYPE varchar(2) NOT NULL,"
-				 + "UNIQUE (KEY, CONTEXT_HASH)"
+				 + "UNIQUE (UID, KEY, CONTEXT_HASH)"
 				 + ") DEFAULT CHARSET=UTF8;");
 		
 		Optional<ResultSet> result =
