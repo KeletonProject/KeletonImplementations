@@ -1,0 +1,17 @@
+[{
+
+    "modid": "keleton-home",
+
+    "name": "keleton-home",
+
+    "version":  "1.0",
+
+    "description": "Home Service Implementation for Keleton Framework",
+
+    "authorList": [
+
+		"Kumonda221"
+
+    ]
+
+}]

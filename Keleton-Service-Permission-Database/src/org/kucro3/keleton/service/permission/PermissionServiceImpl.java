@@ -144,7 +144,7 @@ public class PermissionServiceImpl implements EnhancedPermissionService, UniqueS
 		db.execute("CREATE TABLE IF NOT EXISTS " + rawTableName + " "
 				 + "("
 				 + "UID varchar(255) NOT NULL,"
-				 + "KEY varchar(max) NOT NULL,"
+				 + "KEY varchar NOT NULL,"
 				 + "VALUE text,"
 				 + "CONTEXT text,"
 				 + "CONTEXT_HASH decimal(38),"
