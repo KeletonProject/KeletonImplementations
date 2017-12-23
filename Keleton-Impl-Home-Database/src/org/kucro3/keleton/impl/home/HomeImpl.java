@@ -1,9 +1,10 @@
 package org.kucro3.keleton.impl.home;
 
-import org.kucro3.keleton.datalayer.api.home.EntityHome;
+import org.kucro3.keleton.datalayer.api.home.DataHome;
 import org.kucro3.keleton.event.FailureCause;
 import org.kucro3.keleton.impl.home.event.HomeTeleportEventImpl;
 import org.kucro3.keleton.world.home.Home;
+import org.kucro3.keleton.world.home.HomeCollection;
 import org.kucro3.keleton.world.home.event.HomeTeleportEvent;
 import org.kucro3.keleton.world.home.exception.InvalidHomeException;
 import org.spongepowered.api.Sponge;
@@ -15,6 +16,11 @@ import org.spongepowered.api.world.World;
 import java.util.UUID;
 
 public class HomeImpl implements Home {
+    HomeImpl(HomeCollectionImpl collection)
+    {
+        this.collection = collection;
+    }
+
     @Override
     public String getName()
     {
@@ -32,6 +38,12 @@ public class HomeImpl implements Home {
     {
         check();
         return new Location<>(Sponge.getServer().getWorld(data.getWorld()).get(), data.getX(), data.getY(), data.getZ());
+    }
+
+    @Override
+    public HomeCollection getCollection()
+    {
+        return collection;
     }
 
     @Override
@@ -75,10 +87,12 @@ public class HomeImpl implements Home {
             throw new InvalidHomeException();
     }
 
-    EntityHome getData()
+    private final HomeCollectionImpl collection;
+
+    DataHome getData()
     {
         return data;
     }
 
-    EntityHome data = new EntityHome();
+    DataHome data = new DataHome();
 }
