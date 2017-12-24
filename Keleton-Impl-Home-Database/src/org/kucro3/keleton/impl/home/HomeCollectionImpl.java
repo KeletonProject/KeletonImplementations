@@ -46,11 +46,13 @@ public class HomeCollectionImpl implements HomeCollection {
                 final Homes collection = new Homes();
 
                 try {
-                    service.db.process((conn) -> DataHome.load(conn, tableName, uuid, (data) ->
-                        collection.put(data.getName(), new HomeImpl(pthis, data))
-                    ));
+                    service.db.process((conn) -> DataHome.load(conn, tableName, uuid, (data) -> {
+                        HomeImpl home = new HomeImpl(pthis, data);
+                        collection.put(data.getName(), home);
+                    }));
 
                     group.add(collection);
+                    failures.remove(uuid);
                 } catch (SQLException e) {
                     failures.put(uuid, new HomeInternalException("SQL Failure on preloading", e));
                 }
@@ -63,6 +65,14 @@ public class HomeCollectionImpl implements HomeCollection {
     void lock()
     {
         while(!state);
+    }
+
+    void check(UUID uuid)
+    {
+        HomeException e;
+        if((e = failures.get(uuid)) != null)
+            throw e;
+        lock();
     }
 
     @Override
@@ -108,18 +118,6 @@ public class HomeCollectionImpl implements HomeCollection {
     }
 
     @Override
-    public Collection<Home> getAllHomes() throws HomeException
-    {
-        return null;
-    }
-
-    @Override
-    public Collection<Home> getHomes(World world) throws HomeException
-    {
-        return null;
-    }
-
-    @Override
     public Collection<Home> getHomes(UUID uuid) throws HomeException
     {
         return null;
@@ -139,15 +137,9 @@ public class HomeCollectionImpl implements HomeCollection {
 
     private final HashMap<UUID, HomeException> failures = new HashMap<>();
 
-    private final HashMap<String, Homes> worldMapped = new HashMap<>();
-
     final HomeServiceImpl service;
 
     class Homes extends HashMap<String, HomeImpl>
     {
-        HomeCollectionImpl getCollection()
-        {
-            return HomeCollectionImpl.this;
-        }
     }
 }
