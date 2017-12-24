@@ -16,9 +16,10 @@ import org.spongepowered.api.world.World;
 import java.util.UUID;
 
 public class HomeImpl implements Home {
-    HomeImpl(HomeCollectionImpl collection)
+    HomeImpl(HomeCollectionImpl collection, DataHome data)
     {
         this.collection = collection;
+        this.data = data;
     }
 
     @Override
@@ -94,5 +95,5 @@ public class HomeImpl implements Home {
         return data;
     }
 
-    DataHome data = new DataHome();
+    DataHome data;
 }

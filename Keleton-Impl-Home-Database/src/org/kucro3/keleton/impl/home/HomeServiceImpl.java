@@ -26,8 +26,8 @@ public class HomeServiceImpl implements HomeService, UniqueService {
         if(impl != null)
             return Optional.of(impl);
 
-        impl = new HomeCollectionImpl(this);
         final String tableName = "home_" + s;
+        impl = new HomeCollectionImpl(this, tableName);
 
         try {
             db.process((conn) -> DataHome.ensureTable(conn, tableName));

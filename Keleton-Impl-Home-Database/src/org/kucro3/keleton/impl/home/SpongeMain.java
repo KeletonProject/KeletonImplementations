@@ -13,5 +13,14 @@ public class SpongeMain {
     @Listener
     public void onLoad(GameConstructionEvent event)
     {
+        INSTANCE = this;
+
     }
+
+    public static SpongeMain getInstance()
+    {
+        return INSTANCE;
+    }
+
+    private static SpongeMain INSTANCE;
 }
