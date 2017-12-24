@@ -1,5 +1,6 @@
 package org.kucro3.keleton.impl.home;
 
+import org.kucro3.keleton.cause.FromUniqueService;
 import org.kucro3.keleton.datalayer.api.home.DataHome;
 import org.kucro3.keleton.event.FailureCause;
 import org.kucro3.keleton.impl.home.event.HomeTeleportEventImpl;
@@ -10,6 +11,7 @@ import org.kucro3.keleton.world.home.exception.InvalidHomeException;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -56,6 +58,8 @@ public class HomeImpl implements Home {
     @Override
     public boolean teleport(Entity entity, Cause cause)
     {
+        cause = cause.merge(Cause.of(NamedCause.of("handler", (FromUniqueService) () -> collection.service.getUniqueId())));
+
         String name = getName();
         Location<World> location = getLocation();
 
