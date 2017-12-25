@@ -14,12 +14,14 @@ import org.spongepowered.api.world.World;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class HomeCollectionImpl implements HomeCollection {
-    HomeCollectionImpl(HomeServiceImpl service, String tableName)
+    HomeCollectionImpl(HomeServiceImpl service, String tableName, Executor async)
     {
         this.service = service;
         this.tableName = tableName;
+        this.async = async;
         this.homes = new PlayerRelatedCache<>(SpongeMain.getInstance());
 
         this.homes.enable();
@@ -80,9 +82,19 @@ public class HomeCollectionImpl implements HomeCollection {
             return CompletableFuture.completedFuture(getHomeDirectly(uuid, lname, world));
 
         return CompletableFuture.supplyAsync(() -> {
-            tryLoad0(uuid, homes);
-            return getHomeDirectly(uuid, lname, world);
-        });
+            try {
+                DataHome data =
+                        service.db.apply((conn) ->
+                                world == null ?
+                                        DataHome.query(conn, tableName, uuid, lname) :
+                                        DataHome.query(conn, tableName, uuid, lname, world.getName())).orElse(null);
+                if(data == null)
+                    return Optional.empty();
+                return Optional.of(new HomeImpl(this, data));
+            } catch (SQLException e) {
+                return Optional.empty();
+            }
+        }, async);
     }
 
     Optional<Home> getHomeDirectly(UUID uuid, @CaseInsensitive String name, World world) throws HomeException
@@ -108,7 +120,7 @@ public class HomeCollectionImpl implements HomeCollection {
     @Override
     public CompletableFuture<Boolean> hasHome(UUID uuid, @CaseInsensitive String name, World world) throws HomeException
     {
-        return false;
+        return getHome(uuid, name, world).thenApply((opt) -> opt.isPresent());
     }
 
     @Override
@@ -138,14 +150,22 @@ public class HomeCollectionImpl implements HomeCollection {
     @Override
     public CompletableFuture<Map<String, Home>> getHomes(UUID uuid) throws HomeException
     {
-        Homes collection = homes.get(uuid);
-        return CompletableFuture.completedFuture(homes == null ? Collections.emptyMap() : Collections.unmodifiableMap(homes.get(uuid)));
+        if(homes.available(uuid))
+            return CompletableFuture.completedFuture(Collections.unmodifiableMap(homes.get(uuid)));
+
+        return CompletableFuture.supplyAsync(() -> {
+            tryLoad0(uuid, homes);
+
+            if(!homes.available(uuid))
+                return Collections.emptyMap();
+            return Collections.unmodifiableMap(homes.get(uuid));
+        }, async);
     }
 
     @Override
     public CompletableFuture<Integer> homeCount(UUID uuid) throws HomeException
     {
-        return null;
+        return getHomes(uuid).thenApply((map) -> map.size());
     }
 
     @Override
@@ -161,6 +181,8 @@ public class HomeCollectionImpl implements HomeCollection {
     private final HashMap<UUID, HomeException> failures = new HashMap<>();
 
     final HomeServiceImpl service;
+
+    final Executor async;
 
     class Homes extends HashMap<String, HomeImpl>
     {
