@@ -11,11 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 public class HomeServiceImpl implements HomeService, UniqueService {
-    HomeServiceImpl(DatabaseConnection db)
+    HomeServiceImpl(DatabaseConnection db, Executor async)
     {
         this.db = db;
+        this.async = async;
     }
 
     @Override
@@ -27,10 +29,10 @@ public class HomeServiceImpl implements HomeService, UniqueService {
             return Optional.of(impl);
 
         final String tableName = "home_" + s;
-        impl = new HomeCollectionImpl(this, tableName);
+        impl = new HomeCollectionImpl(this, tableName, async);
 
         try {
-            db.process((conn) -> DataHome.ensureTable(conn, tableName));
+            db.apply((conn) -> DataHome.ensureTable(conn, tableName));
         } catch (SQLException e) {
             return Optional.empty();
         }
@@ -54,4 +56,6 @@ public class HomeServiceImpl implements HomeService, UniqueService {
     private final Map<String, HomeCollectionImpl> collections = new HashMap<>();
 
     private final UUID uuid = UUID.randomUUID();
+
+    private final Executor async;
 }

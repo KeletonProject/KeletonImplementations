@@ -26,8 +26,6 @@ public class HomeCollectionImpl implements HomeCollection {
 
         this.homes.enable();
 
-        final HomeCollectionImpl pthis = this;
-
         this.homes.setCallbackOnLogin((player, cache) -> tryLoad(player.getUniqueId(), cache));
 
         this.homes.setCallbackOnLogoff((player, cache) -> cache.setSoft(player.getUniqueId()));
@@ -124,27 +122,46 @@ public class HomeCollectionImpl implements HomeCollection {
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteHome(UUID uuid, @CaseInsensitive String name, Cause casue) throws HomeException
+    public CompletableFuture<Boolean> deleteHome(UUID uuid, @CaseInsensitive String name, Cause cause) throws HomeException
     {
-        return false;
+        return deleteHome(uuid, name, null, cause);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> deleteHome(UUID uuid, @CaseInsensitive String name, World world, Cause cause) throws HomeException
+    {
+        boolean flag;
+        if(flag = homes.available(uuid))
+        {
+            HomeImpl home = homes.get(uuid).get(name);
+
+            if(home == null)
+                return CompletableFuture.completedFuture(false);
+
+            if(!home.getLocation().inExtent(world))
+                return CompletableFuture.completedFuture(false);
+        }
+
+
+        return null;
     }
 
     @Override
     public CompletableFuture<Boolean> clearHomes(Cause cause) throws HomeException
     {
-        return false;
+        return null;
     }
 
     @Override
     public CompletableFuture<Boolean> clearHomes(World world, Cause casue) throws HomeException
     {
-        return false;
+        return null;
     }
 
     @Override
     public CompletableFuture<Boolean> clearHomes(UUID uuid, Cause casue) throws HomeException
     {
-        return false;
+        return null;
     }
 
     @Override
