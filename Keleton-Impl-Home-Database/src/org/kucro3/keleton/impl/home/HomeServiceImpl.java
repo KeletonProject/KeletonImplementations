@@ -1,10 +1,11 @@
 package org.kucro3.keleton.impl.home;
 
 import org.kucro3.keleton.UniqueService;
-import org.kucro3.keleton.datalayer.api.home.DataHome;
+import org.kucro3.keleton.datalayer.api.home.HomeStorage;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.world.home.HomeCollection;
 import org.kucro3.keleton.world.home.HomeService;
+import org.kucro3.keleton.world.home.exception.HomeStorageException;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -32,9 +33,9 @@ public class HomeServiceImpl implements HomeService, UniqueService {
         impl = new HomeCollectionImpl(this, tableName, async);
 
         try {
-            db.apply((conn) -> DataHome.ensureTable(conn, tableName));
+            db.apply(Helper.wrapStorageException((conn) -> HomeStorage.ensureTable(conn, tableName), "Failed to initialize table structure"));
         } catch (SQLException e) {
-            return Optional.empty();
+            throw new HomeStorageException(e);
         }
         return Optional.of(impl);
     }

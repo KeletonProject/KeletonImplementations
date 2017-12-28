@@ -1,7 +1,7 @@
 package org.kucro3.keleton.impl.home;
 
 import org.kucro3.keleton.cause.FromUniqueService;
-import org.kucro3.keleton.datalayer.api.home.DataHome;
+import org.kucro3.keleton.datalayer.api.home.HomeData;
 import org.kucro3.keleton.event.FailureCause;
 import org.kucro3.keleton.impl.home.event.HomeTeleportEventImpl;
 import org.kucro3.keleton.world.home.Home;
@@ -18,7 +18,7 @@ import org.spongepowered.api.world.World;
 import java.util.UUID;
 
 public class HomeImpl implements Home {
-    HomeImpl(HomeCollectionImpl collection, DataHome data)
+    HomeImpl(HomeCollectionImpl collection, HomeData data)
     {
         this.collection = collection;
         this.data = data;
@@ -94,10 +94,10 @@ public class HomeImpl implements Home {
 
     private final HomeCollectionImpl collection;
 
-    DataHome getData()
+    HomeData getData()
     {
         return data;
     }
 
-    DataHome data;
+    HomeData data;
 }

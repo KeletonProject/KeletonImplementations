@@ -1,7 +1,8 @@
 package org.kucro3.keleton.impl.home;
 
 import org.kucro3.annotation.CaseInsensitive;
-import org.kucro3.keleton.datalayer.api.home.DataHome;
+import org.kucro3.keleton.datalayer.api.home.HomeData;
+import org.kucro3.keleton.datalayer.api.home.HomeStorage;
 import org.kucro3.keleton.datalayer.ref.sponge.PlayerRelatedCache;
 import org.kucro3.keleton.world.home.Home;
 import org.kucro3.keleton.world.home.HomeCollection;
@@ -52,7 +53,7 @@ public class HomeCollectionImpl implements HomeCollection {
         final Homes collection = new Homes();
 
         try {
-            service.db.process((conn) -> DataHome.load(conn, tableName, uuid, (data) -> {
+            service.db.process((conn) -> HomeStorage.load(conn, tableName, uuid, (data) -> {
                 HomeImpl home = new HomeImpl(this, data);
                 collection.put(data.getName(), home);
             }));
@@ -81,11 +82,12 @@ public class HomeCollectionImpl implements HomeCollection {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                DataHome data =
-                        service.db.apply((conn) ->
+                HomeData data =
+                        service.db.apply(Helper.wrapStorageException((conn) ->
                                 world == null ?
-                                        DataHome.query(conn, tableName, uuid, lname) :
-                                        DataHome.query(conn, tableName, uuid, lname, world.getName())).orElse(null);
+                                        HomeStorage.query(conn, tableName, uuid, lname) :
+                                        HomeStorage.query(conn, tableName, uuid, lname, world.getName()),
+                                "Query Failure")).orElse(null);
                 if(data == null)
                     return Optional.empty();
                 return Optional.of(new HomeImpl(this, data));
