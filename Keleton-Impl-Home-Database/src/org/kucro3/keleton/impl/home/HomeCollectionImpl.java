@@ -8,6 +8,7 @@ import org.kucro3.keleton.world.home.Home;
 import org.kucro3.keleton.world.home.HomeCollection;
 import org.kucro3.keleton.world.home.exception.HomeException;
 import org.kucro3.keleton.world.home.exception.HomeInternalException;
+import org.kucro3.keleton.world.home.exception.HomeStorageException;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -83,16 +84,16 @@ public class HomeCollectionImpl implements HomeCollection {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 HomeData data =
-                        service.db.apply(Helper.wrapStorageException((conn) ->
+                        service.db.apply((conn) ->
                                 world == null ?
                                         HomeStorage.query(conn, tableName, uuid, lname) :
-                                        HomeStorage.query(conn, tableName, uuid, lname, world.getName()),
-                                "Query Failure")).orElse(null);
+                                        HomeStorage.query(conn, tableName, uuid, lname, world.getName())
+                        ).orElse(null);
                 if(data == null)
                     return Optional.empty();
                 return Optional.of(new HomeImpl(this, data));
             } catch (SQLException e) {
-                return Optional.empty();
+                throw new HomeStorageException(e);
             }
         }, async);
     }
