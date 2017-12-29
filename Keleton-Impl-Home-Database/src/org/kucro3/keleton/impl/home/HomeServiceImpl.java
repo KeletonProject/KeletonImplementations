@@ -33,10 +33,11 @@ public class HomeServiceImpl implements HomeService, UniqueService {
         impl = new HomeCollectionImpl(this, tableName, async);
 
         try {
-            db.apply(Helper.wrapStorageException((conn) -> HomeStorage.ensureTable(conn, tableName), "Failed to initialize table structure"));
+            db.apply((conn) -> HomeStorage.ensureTable(conn, tableName));
         } catch (SQLException e) {
-            throw new HomeStorageException(e);
+            throw new HomeStorageException("No further information", e);
         }
+
         return Optional.of(impl);
     }
 
