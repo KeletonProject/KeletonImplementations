@@ -1,21 +1,23 @@
 package org.kucro3.keleton.impl.auth;
 
 import org.kucro3.keleton.auth.AuthKeys;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseKeys;
 import org.slf4j.Logger;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-auth",
-	name = "KAuth",
+@Plugin(id = "keleton-impl-auth",
+	name = "keleton-impl-auth",
 	version = "1.0",
 	description = "Auth system Implementation fro Keleton Framework",
 	authors = {"Kumonda221"})
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-auth",
+			   dependencies = {"keletonframework", "keleton-impl-db"})
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
@@ -28,8 +30,8 @@ public class SpongeMain {
 		return logger;
 	}
 	
-	@Listener
-	public void onLoad(GamePreInitializationEvent event)
+	@Override
+	public void onEnable()
 	{
 		ObjectService.put(AuthKeys.SERVICE_POOL, new AuthServicePoolImpl(DatabaseKeys.DATABASE, DatabaseKeys.JDBC_URL_FACTORY));
 	}

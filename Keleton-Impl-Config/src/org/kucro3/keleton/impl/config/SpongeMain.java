@@ -5,37 +5,44 @@ import java.util.Optional;
 
 import org.kucro3.keleton.impl.config.klink.CustomType;
 import org.kucro3.keleton.impl.config.klink.CustomType.Decompiler;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.klink.Util;
 import org.kucro3.klink.expression.ExpressionCompiler;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameConstructionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-config",
-		name = "keleton-config",
+@Plugin(id = "keleton-impl-config",
+		name = "keleton-impl-config",
 		version = "1.0",
 		description = "Configuration Implementation for Keleton Framework",
 		authors = "Kumonda221")
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-config",
+			   dependencies = "keletonframework")
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
 	}
 	
-	@Listener
-	public void onLoad(GameConstructionEvent event)
+	@Override
+	public void onLoad()
+	{
+		ensureFolder();
+	}
+
+	@Override
+	public void onEnable()
 	{
 		ImplementationInstance.initialize();
 		ImplementationInstance._Init_setLogger(logger);
 		bindExtensions();
-		ensureFolder();
 	}
 	
 	static void bindExtensions()

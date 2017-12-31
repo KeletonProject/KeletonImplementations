@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.kucro3.keleton.ban.EnhancedBanService;
 import org.kucro3.keleton.cause.FromUniqueService;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.sql.DatabaseKeys;
@@ -11,32 +13,35 @@ import org.kucro3.keleton.sql.DatabasePool;
 import org.kucro3.keleton.sql.JDBCUrlFactory;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.ban.BanService;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-ban",
-		name = "keleton-ban",
+@Plugin(id = "keleton-impl-ban",
+		name = "keleton-impl-ban",
 		version = "1.0",
 		description = "Ban Service Implementation",
 		authors = "Kumonda221")
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-ban",
+			   dependencies = {"keletonframework", "keleton-impl-db"})
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
+	}
+
+	@Override
+	public void onLoad()
+	{
 		instance = this;
 	}
 	
-	@Listener
-	public void onLoad(GamePreInitializationEvent event)
+	@Override
+	public void onEnable()
 	{
-		pc = Sponge.getPluginManager().getPlugin("keleton-ban").get();
 		try {
 			DatabasePool dbpool = ObjectService.get(DatabaseKeys.DATABASE)
 					.orElseThrow(() -> new IllegalStateException("Database service not reachable"));
@@ -69,8 +74,6 @@ public class SpongeMain {
 	{
 		return instance;
 	}
-	
-	private static PluginContainer pc;
 	
 	private static BanServiceImpl service;
 	

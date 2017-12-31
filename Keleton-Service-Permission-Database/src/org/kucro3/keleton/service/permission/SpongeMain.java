@@ -1,5 +1,7 @@
 package org.kucro3.keleton.service.permission;
 
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.permission.EnhancedPermissionService;
 import org.kucro3.keleton.sql.DatabaseConnection;
@@ -8,28 +10,28 @@ import org.kucro3.keleton.sql.DatabasePool;
 import org.kucro3.keleton.sql.JDBCUrlFactory;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.permission.PermissionService;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-permission",
-		name = "keleton-permission",
+@Plugin(id = "keleton-impl-permission",
+		name = "keleton-impl-permission",
 		version = "1.0",
 		description = "Permission Service Implementation",
 		authors = "Kumonda221")
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-permission",
+			   dependencies = {"keleton-framework", "keleton-impl-db"})
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		this.logger = logger;
 		INSTANCE = this;
 	}
-	
-	@Listener
-	public void onLoad(GamePreInitializationEvent event)
+
+	@Override
+	public void onLoad()
 	{
 		try {
 			DatabasePool dbpool = ObjectService.get(DatabaseKeys.DATABASE)

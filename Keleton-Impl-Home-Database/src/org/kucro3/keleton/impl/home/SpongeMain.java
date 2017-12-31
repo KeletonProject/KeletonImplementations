@@ -1,24 +1,32 @@
 package org.kucro3.keleton.impl.home;
 
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameConstructionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import java.util.concurrent.Executor;
 
-@Plugin(id = "keleton-home",
-        name = "keleton-home",
+@Plugin(id = "keleton-impl-home",
+        name = "keleton-impl-home",
         version = "1.0",
         description = "Home Service Implementation for Keleton Framework",
         authors = "Kumonda221")
-public class SpongeMain {
-    @Listener
-    public void onLoad(GameConstructionEvent event)
+@KeletonModule(name = "keleton-impl-home",
+               dependencies = {"keletonframework", "keleton-datalayer", "keleton-impl-db"})
+public class SpongeMain extends KeletonInstance {
+    @Override
+    public void onLoad()
     {
         INSTANCE = this;
+    }
 
+    @Override
+    public void onEnable()
+    {
         Executor async = Sponge.getScheduler().createAsyncExecutor(this);
+
+        // TODO
     }
 
     public static SpongeMain getInstance()

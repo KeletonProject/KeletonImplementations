@@ -3,25 +3,24 @@ package org.kucro3.keleton.impl.i18n;
 import java.io.File;
 
 import org.kucro3.keleton.i18n.LocaleService;
-import org.kucro3.keleton.keyring.ObjectService;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.slf4j.Logger;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameConstructionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-i18n",
-		name = "keleton-i18n",
+@Plugin(id = "keleton-impl-i18n",
+		name = "keleton-impl-i18n",
 		version = "1.0",
-		description = "International Implementation for Keleton Framework",
+		description = "International Implementation for Keleton Framework powered by Klink",
 		authors = "Kumonda221")
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-i18n",
+			   dependencies = "keletonframework")
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
-		ensureFolder();
-		instance = this;
 		this.logger = logger;
 	}
 	
@@ -29,9 +28,16 @@ public class SpongeMain {
 	{
 		return logger;
 	}
-	
-	@Listener
-	public void onLoad(GameConstructionEvent event)
+
+	@Override
+	public void onLoad()
+	{
+		ensureFolder();
+		instance = this;
+	}
+
+	@Override
+	public void onEnable()
 	{
 		LocaleService.TOKEN.put(new LocaleServiceImpl(LOCALE_FOLDER));
 	}

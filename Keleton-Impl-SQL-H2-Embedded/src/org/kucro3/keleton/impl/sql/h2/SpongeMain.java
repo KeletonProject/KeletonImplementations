@@ -1,5 +1,7 @@
 package org.kucro3.keleton.impl.sql.h2;
 
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.slf4j.Logger;
 import org.spongepowered.api.event.Listener;
@@ -8,12 +10,14 @@ import org.spongepowered.api.plugin.Plugin;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-sql-h2",
-		name = "keleton-sql-h2",
+@Plugin(id = "keleton-impl-db",
+		name = "keleton-impl-db",
 		version = "1.0",
 		description = "H2 SQL Implementation for Keleton Framework",
 		authors = {"Kumonda221"})
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-db",
+			   dependencies = "keletonframework")
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{

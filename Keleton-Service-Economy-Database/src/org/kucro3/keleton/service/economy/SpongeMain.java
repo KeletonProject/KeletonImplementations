@@ -1,6 +1,8 @@
 package org.kucro3.keleton.service.economy;
 
 import org.kucro3.keleton.economy.EnhancedEconomyService;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.sql.DatabaseKeys;
@@ -15,21 +17,28 @@ import org.spongepowered.api.service.economy.EconomyService;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "keleton-economy",
-		name = "keleton-economy",
+@Plugin(id = "keleton-impl-economy",
+		name = "keleton-impl-economy",
 		version = "1.0",
 		description = "Economy Service Implementation",
 		authors = "Kumonda221")
-public class SpongeMain {
+@KeletonModule(name = "keleton-impl-economy",
+			   dependencies = {"keletonframework", "keleton-impl-db"})
+public class SpongeMain extends KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		this.logger = logger;
+	}
+
+	@Override
+	public void onLoad()
+	{
 		INSTANCE = this;
 	}
-	
-	@Listener
-	public void onLoad(GamePreInitializationEvent event)
+
+	@Override
+	public void onEnable()
 	{
 		try {
 			DatabasePool dbpool = ObjectService.get(DatabaseKeys.DATABASE)
