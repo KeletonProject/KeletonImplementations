@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-sql-h2",
+    "modid": "keleton-impl-db",
 
-    "name": "keleton-sql-h2",
+    "name": "keleton-impl-db",
 
     "version":  "1.0",
 

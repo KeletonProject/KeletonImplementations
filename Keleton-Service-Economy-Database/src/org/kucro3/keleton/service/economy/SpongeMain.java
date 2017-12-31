@@ -1,7 +1,8 @@
 package org.kucro3.keleton.service.economy;
 
 import org.kucro3.keleton.economy.EnhancedEconomyService;
-import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.InvokeOnEnable;
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseConnection;
@@ -10,8 +11,6 @@ import org.kucro3.keleton.sql.DatabasePool;
 import org.kucro3.keleton.sql.JDBCUrlFactory;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.economy.EconomyService;
 
@@ -24,20 +23,20 @@ import com.google.inject.Inject;
 		authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-economy",
 			   dependencies = {"keletonframework", "keleton-impl-db"})
-public class SpongeMain extends KeletonInstance {
+public class SpongeMain{
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		this.logger = logger;
 	}
 
-	@Override
+	@InvokeOnLoad
 	public void onLoad()
 	{
 		INSTANCE = this;
 	}
 
-	@Override
+	@InvokeOnEnable
 	public void onEnable()
 	{
 		try {

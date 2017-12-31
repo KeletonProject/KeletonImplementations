@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-ban",
+    "modid": "keleton-impl-ban",
 
-    "name": "keleton-ban",
+    "name": "keleton-impl-ban",
 
     "version":  "1.0",
 

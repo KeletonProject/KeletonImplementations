@@ -3,7 +3,8 @@ package org.kucro3.keleton.impl.i18n;
 import java.io.File;
 
 import org.kucro3.keleton.i18n.LocaleService;
-import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.InvokeOnEnable;
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.slf4j.Logger;
 import org.spongepowered.api.plugin.Plugin;
@@ -17,7 +18,7 @@ import com.google.inject.Inject;
 		authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-i18n",
 			   dependencies = "keletonframework")
-public class SpongeMain extends KeletonInstance {
+public class SpongeMain {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
@@ -29,14 +30,14 @@ public class SpongeMain extends KeletonInstance {
 		return logger;
 	}
 
-	@Override
+	@InvokeOnLoad
 	public void onLoad()
 	{
 		ensureFolder();
 		instance = this;
 	}
 
-	@Override
+	@InvokeOnEnable
 	public void onEnable()
 	{
 		LocaleService.TOKEN.put(new LocaleServiceImpl(LOCALE_FOLDER));

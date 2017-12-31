@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-auth",
+    "modid": "keleton-impl-auth",
 
-    "name": "keleton-auth",
+    "name": "keleton-impl-auth",
 
     "version":  "1.0",
 

@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-economy",
+    "modid": "keleton-impl-economy",
 
-    "name": "keleton-economy",
+    "name": "keleton-impl-economy",
 
     "version":  "1.0",
 

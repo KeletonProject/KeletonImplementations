@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-permission",
+    "modid": "keleton-impl-permission",
 
-    "name": "keleton-permission",
+    "name": "keleton-impl-permission",
 
     "version":  "1.0",
 

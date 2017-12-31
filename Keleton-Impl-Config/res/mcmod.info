@@ -1,8 +1,8 @@
 [{
 
-    "modid": "keleton-config",
+    "modid": "keleton-impl-config",
 
-    "name": "keleton-config",
+    "name": "keleton-impl-config",
 
     "version":  "1.0",
 

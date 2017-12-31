@@ -1,6 +1,7 @@
 package org.kucro3.keleton.impl.home;
 
-import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.InvokeOnEnable;
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.plugin.Plugin;
@@ -14,14 +15,14 @@ import java.util.concurrent.Executor;
         authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-home",
                dependencies = {"keletonframework", "keleton-datalayer", "keleton-impl-db"})
-public class SpongeMain extends KeletonInstance {
-    @Override
+public class SpongeMain {
+    @InvokeOnLoad
     public void onLoad()
     {
         INSTANCE = this;
     }
 
-    @Override
+    @InvokeOnEnable
     public void onEnable()
     {
         Executor async = Sponge.getScheduler().createAsyncExecutor(this);

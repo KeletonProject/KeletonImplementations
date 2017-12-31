@@ -5,7 +5,8 @@ import java.io.IOException;
 
 import org.kucro3.keleton.config.ConfigurationKeys;
 import org.kucro3.keleton.exception.KeletonException;
-import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.InvokeOnEnable;
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.world.SpawnProvider;
@@ -23,14 +24,14 @@ import com.google.inject.Inject;
 		authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-worldspawn",
 			   dependencies = {"keletonframework", "keleton-impl-config"})
-public class SpongeMain extends KeletonInstance {
+public class SpongeMain {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
 	}
 
-	@Override
+	@InvokeOnLoad
 	public void onLoad() throws KeletonException
 	{
 		if(!CONFIG.exists() || !CONFIG.isFile()) {
@@ -42,7 +43,7 @@ public class SpongeMain extends KeletonInstance {
 		}
 	}
 
-	@Listener
+	@InvokeOnEnable
 	public void onEnable() throws KeletonException
 	{
 		SpawnProvider.TOKEN.put(impl = new SpawnProviderImpl(

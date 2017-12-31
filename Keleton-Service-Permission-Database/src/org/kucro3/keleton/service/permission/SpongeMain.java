@@ -1,5 +1,6 @@
 package org.kucro3.keleton.service.permission;
 
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonInstance;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
@@ -22,7 +23,7 @@ import com.google.inject.Inject;
 		authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-permission",
 			   dependencies = {"keleton-framework", "keleton-impl-db"})
-public class SpongeMain extends KeletonInstance {
+public class SpongeMain {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
@@ -30,7 +31,7 @@ public class SpongeMain extends KeletonInstance {
 		INSTANCE = this;
 	}
 
-	@Override
+	@InvokeOnLoad
 	public void onLoad()
 	{
 		try {

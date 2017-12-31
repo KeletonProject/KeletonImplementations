@@ -4,7 +4,8 @@ import java.util.UUID;
 
 import org.kucro3.keleton.ban.EnhancedBanService;
 import org.kucro3.keleton.cause.FromUniqueService;
-import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.InvokeOnEnable;
+import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonModule;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseConnection;
@@ -26,20 +27,20 @@ import com.google.inject.Inject;
 		authors = "Kumonda221")
 @KeletonModule(name = "keleton-impl-ban",
 			   dependencies = {"keletonframework", "keleton-impl-db"})
-public class SpongeMain extends KeletonInstance {
+public class SpongeMain {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
 	}
 
-	@Override
+	@InvokeOnLoad
 	public void onLoad()
 	{
 		instance = this;
 	}
-	
-	@Override
+
+	@InvokeOnEnable
 	public void onEnable()
 	{
 		try {
