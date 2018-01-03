@@ -1,9 +1,8 @@
 package org.kucro3.keleton.service.economy;
 
 import org.kucro3.keleton.economy.EnhancedEconomyService;
-import org.kucro3.keleton.implementation.InvokeOnEnable;
-import org.kucro3.keleton.implementation.InvokeOnLoad;
-import org.kucro3.keleton.implementation.KeletonModule;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.sql.DatabaseKeys;
@@ -21,22 +20,22 @@ import com.google.inject.Inject;
 		version = "1.0",
 		description = "Economy Service Implementation",
 		authors = "Kumonda221")
-@KeletonModule(name = "keleton-impl-economy",
-			   dependencies = {"keletonframework", "keleton-impl-db"})
-public class SpongeMain{
+@Module(id = "keleton-impl-economy",
+		dependencies = {"keletonframework", "keleton-impl-db"})
+public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		this.logger = logger;
 	}
 
-	@InvokeOnLoad
+	@Override
 	public void onLoad()
 	{
 		INSTANCE = this;
 	}
 
-	@InvokeOnEnable
+	@Override
 	public void onEnable()
 	{
 		try {

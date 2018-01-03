@@ -1,8 +1,8 @@
 package org.kucro3.keleton.impl.auth;
 
 import org.kucro3.keleton.auth.AuthKeys;
-import org.kucro3.keleton.implementation.InvokeOnEnable;
-import org.kucro3.keleton.implementation.KeletonModule;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.sql.DatabaseKeys;
 import org.slf4j.Logger;
@@ -15,9 +15,9 @@ import com.google.inject.Inject;
 	version = "1.0",
 	description = "Auth system Implementation fro Keleton Framework",
 	authors = {"Kumonda221"})
-@KeletonModule(name = "keleton-impl-auth",
-			   dependencies = {"keletonframework", "keleton-impl-db"})
-public class SpongeMain {
+@Module(id = "keleton-impl-auth",
+		dependencies = {"keletonframework", "keleton-impl-db"})
+public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
@@ -30,7 +30,7 @@ public class SpongeMain {
 		return logger;
 	}
 
-	@InvokeOnEnable
+	@Override
 	public void onEnable()
 	{
 		ObjectService.put(AuthKeys.SERVICE_POOL, new AuthServicePoolImpl(DatabaseKeys.DATABASE, DatabaseKeys.JDBC_URL_FACTORY));

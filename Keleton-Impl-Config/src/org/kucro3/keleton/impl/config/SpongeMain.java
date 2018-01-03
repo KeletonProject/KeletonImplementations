@@ -5,9 +5,8 @@ import java.util.Optional;
 
 import org.kucro3.keleton.impl.config.klink.CustomType;
 import org.kucro3.keleton.impl.config.klink.CustomType.Decompiler;
-import org.kucro3.keleton.implementation.InvokeOnEnable;
-import org.kucro3.keleton.implementation.InvokeOnLoad;
-import org.kucro3.keleton.implementation.KeletonModule;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.Module;
 import org.kucro3.klink.Util;
 import org.kucro3.klink.expression.ExpressionCompiler;
 import org.slf4j.Logger;
@@ -23,22 +22,22 @@ import com.google.inject.Inject;
 		version = "1.0",
 		description = "Configuration Implementation for Keleton Framework",
 		authors = "Kumonda221")
-@KeletonModule(name = "keleton-impl-config",
-			   dependencies = "keletonframework")
-public class SpongeMain {
+@Module(id = "keleton-impl-config",
+		dependencies = "keletonframework")
+public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
 	}
-	
-	@InvokeOnLoad
+
+	@Override
 	public void onLoad()
 	{
 		ensureFolder();
 	}
 
-	@InvokeOnEnable
+	@Override
 	public void onEnable()
 	{
 		ImplementationInstance.initialize();

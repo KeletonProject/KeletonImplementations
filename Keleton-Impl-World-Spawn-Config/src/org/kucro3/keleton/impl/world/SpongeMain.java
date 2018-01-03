@@ -5,14 +5,12 @@ import java.io.IOException;
 
 import org.kucro3.keleton.config.ConfigurationKeys;
 import org.kucro3.keleton.exception.KeletonException;
-import org.kucro3.keleton.implementation.InvokeOnEnable;
-import org.kucro3.keleton.implementation.InvokeOnLoad;
-import org.kucro3.keleton.implementation.KeletonModule;
+import org.kucro3.keleton.exception.KeletonInternalException;
+import org.kucro3.keleton.implementation.KeletonInstance;
+import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.world.SpawnProvider;
 import org.slf4j.Logger;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import com.google.inject.Inject;
@@ -22,40 +20,36 @@ import com.google.inject.Inject;
 		version = "1.0",
 		description = "World Spawn Implementation for Keleton Framework",
 		authors = "Kumonda221")
-@KeletonModule(name = "keleton-impl-worldspawn",
-			   dependencies = {"keletonframework", "keleton-impl-config"})
-public class SpongeMain {
+@Module(id = "keleton-impl-worldspawn",
+		dependencies = {"keletonframework", "keleton-impl-config"})
+public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
 		SpongeMain.logger = logger;
 	}
 
-	@InvokeOnLoad
-	public void onLoad() throws KeletonException
+	@Override
+	public void onLoad()
 	{
 		if(!CONFIG.exists() || !CONFIG.isFile()) {
 			try {
 				CONFIG.createNewFile();
 			} catch (IOException e) {
-				throw new KeletonException(e);
+				throw new KeletonInternalException(e);
 			}
 		}
+
+		impl.initialize();
 	}
 
-	@InvokeOnEnable
+	@Override
 	public void onEnable() throws KeletonException
 	{
 		SpawnProvider.TOKEN.put(impl = new SpawnProviderImpl(
 				ObjectService.get(ConfigurationKeys.SERVICE).get().getOperator("KLINK").get().readConfiguration(File.class, CONFIG)));
 	}
-	
-	@Listener
-	public void onStarted(GameStartedServerEvent event)
-	{
-		impl.initialize();
-	}
-	
+
 	public static Logger getLogger()
 	{
 		return logger;

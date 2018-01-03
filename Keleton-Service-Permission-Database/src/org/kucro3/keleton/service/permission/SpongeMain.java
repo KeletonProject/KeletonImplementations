@@ -1,8 +1,7 @@
 package org.kucro3.keleton.service.permission;
 
-import org.kucro3.keleton.implementation.InvokeOnLoad;
 import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.KeletonModule;
+import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
 import org.kucro3.keleton.permission.EnhancedPermissionService;
 import org.kucro3.keleton.sql.DatabaseConnection;
@@ -21,9 +20,9 @@ import com.google.inject.Inject;
 		version = "1.0",
 		description = "Permission Service Implementation",
 		authors = "Kumonda221")
-@KeletonModule(name = "keleton-impl-permission",
-			   dependencies = {"keleton-framework", "keleton-impl-db"})
-public class SpongeMain {
+@Module(id = "keleton-impl-permission",
+		dependencies = {"keleton-framework", "keleton-impl-db"})
+public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
 	{
@@ -31,7 +30,7 @@ public class SpongeMain {
 		INSTANCE = this;
 	}
 
-	@InvokeOnLoad
+	@Override
 	public void onLoad()
 	{
 		try {
