@@ -1,8 +1,8 @@
 package org.kucro3.keleton.service.permission;
 
-import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
+import org.kucro3.keleton.module.KeletonInstance;
+import org.kucro3.keleton.module.Module;
 import org.kucro3.keleton.permission.EnhancedPermissionService;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.sql.DatabaseKeys;
@@ -15,13 +15,15 @@ import org.spongepowered.api.service.permission.PermissionService;
 
 import com.google.inject.Inject;
 
+import java.util.concurrent.CompletableFuture;
+
 @Plugin(id = "keleton-impl-permission",
 		name = "keleton-impl-permission",
 		version = "1.0",
 		description = "Permission Service Implementation",
 		authors = "Kumonda221")
 @Module(id = "keleton-impl-permission",
-		dependencies = {"keleton-framework", "keleton-impl-db"})
+		dependencies = {"keleton-impl-db"})
 public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
@@ -31,7 +33,7 @@ public class SpongeMain implements KeletonInstance {
 	}
 
 	@Override
-	public void onLoad()
+	public CompletableFuture<Void> onLoad()
 	{
 		try {
 			DatabasePool dbpool = ObjectService.get(DatabaseKeys.DATABASE)
@@ -46,6 +48,8 @@ public class SpongeMain implements KeletonInstance {
 		} catch (Exception e) {
 			logger.error("Cannot initialize economy service", e);
 		}
+
+		return CompletableFuture.completedFuture(null);
 	}
 	
 	public static SpongeMain getInstance()

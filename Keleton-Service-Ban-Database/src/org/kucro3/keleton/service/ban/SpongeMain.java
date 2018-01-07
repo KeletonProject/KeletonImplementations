@@ -1,12 +1,13 @@
 package org.kucro3.keleton.service.ban;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.kucro3.keleton.ban.EnhancedBanService;
 import org.kucro3.keleton.cause.FromUniqueService;
-import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
+import org.kucro3.keleton.module.KeletonInstance;
+import org.kucro3.keleton.module.Module;
 import org.kucro3.keleton.sql.DatabaseConnection;
 import org.kucro3.keleton.sql.DatabaseKeys;
 import org.kucro3.keleton.sql.DatabasePool;
@@ -25,7 +26,7 @@ import com.google.inject.Inject;
 		description = "Ban Service Implementation",
 		authors = "Kumonda221")
 @Module(id = "keleton-impl-ban",
-		dependencies = {"keletonframework", "keleton-impl-db"})
+		dependencies = {"keleton-impl-db"})
 public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
@@ -34,13 +35,15 @@ public class SpongeMain implements KeletonInstance {
 	}
 
 	@Override
-	public void onLoad()
+	public CompletableFuture<Void> onLoad()
 	{
 		instance = this;
+
+		return CompletableFuture.completedFuture(null);
 	}
 
 	@Override
-	public void onEnable()
+	public CompletableFuture<Void> onEnable()
 	{
 		try {
 			DatabasePool dbpool = ObjectService.get(DatabaseKeys.DATABASE)
@@ -58,6 +61,8 @@ public class SpongeMain implements KeletonInstance {
 		} catch (Exception e) {
 			logger.error("Cannot initialize ban service", e);
 		}
+
+		return CompletableFuture.completedFuture(null);
 	}
 	
 	static Cause from(UUID uuid)

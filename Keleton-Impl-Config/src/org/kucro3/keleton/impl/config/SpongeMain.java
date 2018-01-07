@@ -2,11 +2,12 @@ package org.kucro3.keleton.impl.config;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.kucro3.keleton.impl.config.klink.CustomType;
 import org.kucro3.keleton.impl.config.klink.CustomType.Decompiler;
-import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.Module;
+import org.kucro3.keleton.module.KeletonInstance;
+import org.kucro3.keleton.module.Module;
 import org.kucro3.klink.Util;
 import org.kucro3.klink.expression.ExpressionCompiler;
 import org.slf4j.Logger;
@@ -22,8 +23,7 @@ import com.google.inject.Inject;
 		version = "1.0",
 		description = "Configuration Implementation for Keleton Framework",
 		authors = "Kumonda221")
-@Module(id = "keleton-impl-config",
-		dependencies = "keletonframework")
+@Module(id = "keleton-impl-config")
 public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
@@ -32,17 +32,19 @@ public class SpongeMain implements KeletonInstance {
 	}
 
 	@Override
-	public void onLoad()
+	public CompletableFuture<Void> onLoad()
 	{
 		ensureFolder();
+		return CompletableFuture.completedFuture(null);
 	}
 
 	@Override
-	public void onEnable()
+	public CompletableFuture<Void> onEnable()
 	{
 		ImplementationInstance.initialize();
 		ImplementationInstance._Init_setLogger(logger);
 		bindExtensions();
+		return CompletableFuture.completedFuture(null);
 	}
 	
 	static void bindExtensions()

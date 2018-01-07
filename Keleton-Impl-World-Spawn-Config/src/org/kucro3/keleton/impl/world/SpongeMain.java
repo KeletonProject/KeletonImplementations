@@ -2,13 +2,14 @@ package org.kucro3.keleton.impl.world;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import org.kucro3.keleton.config.ConfigurationKeys;
 import org.kucro3.keleton.exception.KeletonException;
 import org.kucro3.keleton.exception.KeletonInternalException;
-import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.Module;
 import org.kucro3.keleton.keyring.ObjectService;
+import org.kucro3.keleton.module.KeletonInstance;
+import org.kucro3.keleton.module.Module;
 import org.kucro3.keleton.world.SpawnProvider;
 import org.slf4j.Logger;
 import org.spongepowered.api.plugin.Plugin;
@@ -21,7 +22,7 @@ import com.google.inject.Inject;
 		description = "World Spawn Implementation for Keleton Framework",
 		authors = "Kumonda221")
 @Module(id = "keleton-impl-worldspawn",
-		dependencies = {"keletonframework", "keleton-impl-config"})
+		dependencies = {"keleton-impl-config"})
 public class SpongeMain implements KeletonInstance {
 	@Inject
 	public SpongeMain(Logger logger)
@@ -30,7 +31,7 @@ public class SpongeMain implements KeletonInstance {
 	}
 
 	@Override
-	public void onLoad()
+	public CompletableFuture<Void> onLoad()
 	{
 		if(!CONFIG.exists() || !CONFIG.isFile()) {
 			try {
@@ -41,13 +42,17 @@ public class SpongeMain implements KeletonInstance {
 		}
 
 		impl.initialize();
+
+		return CompletableFuture.completedFuture(null);
 	}
 
 	@Override
-	public void onEnable() throws KeletonException
+	public CompletableFuture<Void> onEnable() throws KeletonException
 	{
 		SpawnProvider.TOKEN.put(impl = new SpawnProviderImpl(
 				ObjectService.get(ConfigurationKeys.SERVICE).get().getOperator("KLINK").get().readConfiguration(File.class, CONFIG)));
+
+		return CompletableFuture.completedFuture(null);
 	}
 
 	public static Logger getLogger()

@@ -1,10 +1,11 @@
 package org.kucro3.keleton.impl.home;
 
-import org.kucro3.keleton.implementation.KeletonInstance;
-import org.kucro3.keleton.implementation.Module;
+import org.kucro3.keleton.module.KeletonInstance;
+import org.kucro3.keleton.module.Module;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.plugin.Plugin;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 @Plugin(id = "keleton-impl-home",
@@ -13,20 +14,24 @@ import java.util.concurrent.Executor;
         description = "Home Service Implementation for Keleton Framework",
         authors = "Kumonda221")
 @Module(id = "keleton-impl-home",
-        dependencies = {"keletonframework", "keleton-datalayer", "keleton-impl-db"})
+        dependencies = {"keleton-datalayer", "keleton-impl-db"})
 public class SpongeMain implements KeletonInstance {
     @Override
-    public void onLoad()
+    public CompletableFuture<Void> onLoad()
     {
         INSTANCE = this;
+
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void onEnable()
+    public CompletableFuture<Void> onEnable()
     {
         Executor async = Sponge.getScheduler().createAsyncExecutor(this);
 
         // TODO
+
+        return CompletableFuture.completedFuture(null);
     }
 
     public static SpongeMain getInstance()
